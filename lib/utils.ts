@@ -50,3 +50,13 @@ export function getEndOfWeek(date: Date): Date {
   end.setHours(23, 59, 59, 999)
   return end
 }
+
+export function baseUrl(): string {
+  if (process.env.NEXT_PUBLIC_APP_URL) {
+    return process.env.NEXT_PUBLIC_APP_URL
+  }
+  if (typeof window !== 'undefined') {
+    return window.location.origin
+  }
+  return 'http://localhost:3000'
+}

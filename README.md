@@ -27,10 +27,28 @@ Simple doctor appointment booking system for Syria.
    npx prisma migrate dev --name init
    ```
 
-4. **Start development server**
+4. **Seed sample data**
+   ```bash
+   npm run db:seed
+   ```
+   This creates a sample doctor:
+   - Name: Dr. Ahmad Ali
+   - Doctor ID: 1
+   - Phone: +963912345678
+   - **Password (MVP):** 5678 (last 4 digits of phone)
+
+5. **Start development server**
    ```bash
    npm run dev
    ```
+
+## Doctor Login (MVP)
+
+For MVP, use your **Doctor ID** and **last 4 digits of phone number** as password.
+
+Example for seeded doctor:
+- Doctor ID: `1`
+- Password: `5678`
 
 ## Database Models
 
