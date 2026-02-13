@@ -1,7 +1,8 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Doctor } from '@/lib/prisma'
+import { Doctor } from '@/prisma/client'
+
 import { formatDate, formatTime } from '@/lib/utils'
 
 interface DoctorBookingPageProps {
