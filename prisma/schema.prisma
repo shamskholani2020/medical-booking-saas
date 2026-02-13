@@ -16,6 +16,7 @@ model Doctor {
   createdAt      DateTime      @default(now())
   updatedAt      DateTime      @updatedAt
   appointments   Appointment[]
+  availabilities Availability[] @relation("DoctorAvailabilities")
 
   @@index([slug])
 }
@@ -23,9 +24,9 @@ model Doctor {
 model Availability {
   id        Int      @id @default(autoincrement())
   doctorId  Int
-  doctor    Doctor   @relation(fields: [doctorId], references: [id])
+  doctor    Doctor   @relation("DoctorAvailabilities", fields: [doctorId], references: [id])
   date      DateTime @db.Date
-  timeSlot  String   // e.g., "14:00", "14:30"
+  timeSlot  String
   isBlocked Boolean  @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -34,6 +35,7 @@ model Availability {
   @@index([doctorId, date])
   @@index([date])
 }
+
 
 model Appointment {
   id            Int               @id @default(autoincrement())
