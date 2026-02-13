@@ -1,0 +1,67 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Doctor {
+  id             Int           @id @default(autoincrement())
+  name           String
+  slug           String        @unique
+  phone          String?
+  whatsappNumber String?
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+  appointments   Appointment[]
+
+  @@index([slug])
+}
+
+model Availability {
+  id        Int      @id @default(autoincrement())
+  doctorId  Int
+  doctor    Doctor   @relation(fields: [doctorId], references: [id])
+  date      DateTime @db.Date
+  timeSlot  String   // e.g., "14:00", "14:30"
+  isBlocked Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([doctorId, date, timeSlot])
+  @@index([doctorId, date])
+  @@index([date])
+}
+
+model Appointment {
+  id            Int               @id @default(autoincrement())
+  doctorId      Int
+  doctor        Doctor            @relation(fields: [doctorId], references: [id])
+  patientName   String
+  patientPhone  String
+  date          DateTime          @db.Date
+  timeSlot      String
+  status        AppointmentStatus @default(pending)
+  messageStatus MessageStatus     @default(pending)
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
+
+  @@unique([doctorId, date, timeSlot])
+  @@index([doctorId, date])
+  @@index([date])
+}
+
+enum AppointmentStatus {
+  pending
+  confirmed
+  completed
+  cancelled
+}
+
+enum MessageStatus {
+  pending
+  sent
+  failed
+}
