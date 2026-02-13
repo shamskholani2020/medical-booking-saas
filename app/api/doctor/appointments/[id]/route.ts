@@ -38,6 +38,11 @@ export async function PATCH(request: Request, context: RouteContext) {
       data: { status },
     })
 
+    // Send cancellation notification if status changed to cancelled
+    if (status === 'cancelled') {
+      sendCancellationAsync(appointment.id)
+    }
+
     return NextResponse.json({ success: true, appointment: updated })
   } catch (error: any) {
     if (error.message === 'Unauthorized') {
@@ -45,5 +50,15 @@ export async function PATCH(request: Request, context: RouteContext) {
     }
     console.error('Appointment update error:', error)
     return NextResponse.json({ error: 'Failed to update appointment' }, { status: 500 })
+  }
+}
+
+// Async function to send cancellation notification (non-blocking)
+async function sendCancellationAsync(appointmentId: number) {
+  try {
+    const { sendCancellationNotification } = await import('@/lib/messaging')
+    await sendCancellationNotification(appointmentId)
+  } catch (error) {
+    console.error('Error sending cancellation notification asynchronously:', error)
   }
 }

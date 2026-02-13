@@ -83,9 +83,9 @@ export async function POST(request: Request) {
       },
     })
 
-    // TODO: Trigger WhatsApp/SMS message asynchronously
-    // This should not block the booking process
-    // await sendBookingConfirmation(appointment)
+    // Send confirmation message asynchronously (non-blocking)
+    // This doesn't affect the booking success
+    sendConfirmationAsync(appointment.id)
 
     return NextResponse.json(
       {
@@ -115,5 +115,16 @@ export async function POST(request: Request) {
       { error: 'Failed to create booking' },
       { status: 500 }
     )
+  }
+}
+
+// Async function to send confirmation (non-blocking)
+async function sendConfirmationAsync(appointmentId: number) {
+  try {
+    // Import dynamically to avoid circular dependencies
+    const { sendBookingConfirmation } = await import('@/lib/messaging')
+    await sendBookingConfirmation(appointmentId)
+  } catch (error) {
+    console.error('Error sending confirmation asynchronously:', error)
   }
 }

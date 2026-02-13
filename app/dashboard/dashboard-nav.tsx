@@ -34,6 +34,13 @@ export default function DashboardNav() {
       </a>
       <span className="text-gray-300">|</span>
       <a
+        href="/dashboard/messages"
+        className="text-gray-600 hover:text-gray-900 text-sm font-medium"
+      >
+        Messages
+      </a>
+      <span className="text-gray-300">|</span>
+      <a
         href="/dashboard/qr"
         className="text-gray-600 hover:text-gray-900 text-sm font-medium"
       >
