@@ -36,12 +36,13 @@
 - Mobile-first, non-technical UI
 
 ### Phase 4: Confirmation System ✅
-- WhatsApp/SMS integration (Twilio)
 - Async message sending (non-blocking)
+- Console-based logging (ready for provider integration)
 - Cancellation notifications
 - Failed message retry system
 - Message status tracking
 - Doctor dashboard: Messages page
+- Provider-agnostic architecture
 
 ### Phase 5: QR System ✅
 - Unique QR per doctor
@@ -57,8 +58,8 @@
 - **PostgreSQL** - Reliable database
 - **Prisma ORM** - Type-safe database access
 - **TailwindCSS** - Mobile-first styling
-- **Twilio** - WhatsApp/SMS (optional)
 - **Docker** - Easy deployment
+- **Messaging** - Provider-agnostic (ready for integration)
 
 ### Key Features
 - ✅ Mobile-first responsive design
@@ -102,14 +103,12 @@ git push origin main
 # Required
 DATABASE_URL="postgresql://user:password@host:5432/medical_booking?schema=public"
 
-# Optional - For WhatsApp/SMS
-TWILIO_ACCOUNT_SID="your_account_sid"
-TWILIO_AUTH_TOKEN="your_auth_token"
-TWILIO_WHATSAPP_FROM="+14155238886"
-TWILIO_SMS_FROM="+1234567890"
-
 # Optional
 NEXT_PUBLIC_APP_URL="http://localhost:3000"
+NODE_ENV="production"
+
+# Note: For WhatsApp/SMS, integrate your preferred messaging provider
+# See lib/message-service.ts for implementation instructions
 ```
 
 ---
@@ -198,6 +197,7 @@ medical-booking-saas/
 - Add input validation library (Zod)
 
 ### Priority 2 (Features)
+- Integrate messaging provider (Twilio, MessageBird, etc.)
 - Add Arabic language support
 - Custom time slot durations
 - Recurring availability patterns
