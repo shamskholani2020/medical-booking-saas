@@ -3,6 +3,8 @@ import { requireDoctorAuth } from '@/lib/auth'
 import QRCode from 'qrcode'
 import { baseUrl } from '@/lib/utils'
 
+export const dynamic = 'force-dynamic'
+
 export default async function QRPage() {
   const doctorId = await requireDoctorAuth()
 
@@ -20,7 +22,7 @@ export default async function QRPage() {
   }
 
   // Generate QR code for doctor's public page
-  const bookingUrl = `${baseUrl}/d/${doctor.slug}`
+  const bookingUrl = `${baseUrl()}/d/${doctor.slug}`
   const qrCodeDataUrl = await QRCode.toDataURL(bookingUrl, {
     width: 300,
     margin: 2,

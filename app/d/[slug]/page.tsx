@@ -3,6 +3,8 @@ import { prisma } from '@/lib/prisma'
 import { formatDate } from '@/lib/utils'
 import DoctorBookingPage from './doctor-booking-page'
 
+export const dynamic = 'force-dynamic'
+
 interface PageProps {
   params: Promise<{ slug: string }>
 }
