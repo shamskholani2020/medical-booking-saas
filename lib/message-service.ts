@@ -1,98 +1,37 @@
-// Message service interface - supports WhatsApp and SMS
-// Uses Twilio as default provider (can be extended)
+// Simple console-based message service for MVP
+// In production, integrate with your preferred messaging provider
 
 export interface MessageService {
   sendWhatsApp(to: string, message: string): Promise<void>
   sendSMS(to: string, message: string): Promise<void>
 }
 
-export class TwilioMessageService implements MessageService {
-  private accountSid: string
-  private authToken: string
-  private whatsappFrom: string
-  private smsFrom: string
-
-  constructor() {
-    this.accountSid = process.env.TWILIO_ACCOUNT_SID || ''
-    this.authToken = process.env.TWILIO_AUTH_TOKEN || ''
-    this.whatsappFrom = process.env.TWILIO_WHATSAPP_FROM || ''
-    this.smsFrom = process.env.TWILIO_SMS_FROM || ''
-  }
-
-  async sendWhatsApp(to: string, message: string): Promise<void> {
-    if (!this.accountSid || !this.authToken || !this.whatsappFrom) {
-      throw new Error('Twilio WhatsApp not configured')
-    }
-
-    const response = await fetch(
-      `https://api.twilio.com/2010-04-01/Accounts/${this.accountSid}/Messages.json`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-          Authorization: `Basic ${Buffer.from(`${this.accountSid}:${this.authToken}`).toString('base64')}`,
-        },
-        body: new URLSearchParams({
-          From: `whatsapp:${this.whatsappFrom}`,
-          To: `whatsapp:${to}`,
-          Body: message,
-        }),
-      }
-    )
-
-    if (!response.ok) {
-      throw new Error(`Failed to send WhatsApp: ${response.statusText}`)
-    }
-  }
-
-  async sendSMS(to: string, message: string): Promise<void> {
-    if (!this.accountSid || !this.authToken || !this.smsFrom) {
-      throw new Error('Twilio SMS not configured')
-    }
-
-    const response = await fetch(
-      `https://api.twilio.com/2010-04-01/Accounts/${this.accountSid}/Messages.json`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-          Authorization: `Basic ${Buffer.from(`${this.accountSid}:${this.authToken}`).toString('base64')}`,
-        },
-        body: new URLSearchParams({
-          From: this.smsFrom,
-          To: to,
-          Body: message,
-        }),
-      }
-    )
-
-    if (!response.ok) {
-      throw new Error(`Failed to send SMS: ${response.statusText}`)
-    }
-  }
-}
-
-// Fallback service that just logs (for development)
 export class ConsoleMessageService implements MessageService {
   async sendWhatsApp(to: string, message: string): Promise<void> {
-    console.log(`[WhatsApp Mock] To: ${to}, Message: ${message}`)
+    console.log(`[WhatsApp] To: ${to}`)
+    console.log(`[WhatsApp] Message: ${message}`)
+    console.log(`[WhatsApp] Note: Integrate messaging provider in production`)
   }
 
   async sendSMS(to: string, message: string): Promise<void> {
-    console.log(`[SMS Mock] To: ${to}, Message: ${message}`)
+    console.log(`[SMS] To: ${to}`)
+    console.log(`[SMS] Message: ${message}`)
+    console.log(`[SMS] Note: Integrate messaging provider in production`)
   }
 }
 
-// Factory function to get the appropriate service
+// Factory function to get the message service
 export function getMessageService(): MessageService {
-  // Use Twilio if configured, otherwise use console for development
-  if (process.env.TWILIO_ACCOUNT_SID && process.env.TWILIO_AUTH_TOKEN) {
-    return new TwilioMessageService()
-  }
+  // Currently using console service - integrate your provider here
+  // Example providers to integrate:
+  // - Twilio (WhatsApp + SMS)
+  // - MessageBird
+  // - WhatsApp Business API directly
+  // - Local SMS gateway
   return new ConsoleMessageService()
 }
 
-// Format phone number for Twilio
+// Format phone number for Syria
 export function formatPhoneNumber(phone: string): string {
   // Remove all non-numeric characters
   let cleaned = phone.replace(/\D/g, '')

@@ -63,9 +63,10 @@ Example for seeded doctor:
 - ✅ Simple patient booking (name + phone, no auth)
 - ✅ Doctor dashboard (availability management, appointment view)
 - ✅ Double-booking prevention at DB level
-- ✅ WhatsApp/SMS confirmation (async, non-blocking)
+- ✅ Async confirmation system (ready for WhatsApp/SMS integration)
 - ✅ Failed message retry system
 - ✅ Message status tracking
+- ✅ Console-based messaging for development
 
 ## MVP Constraints
 

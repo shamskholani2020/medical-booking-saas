@@ -4,9 +4,9 @@
 
 ### ✅ Message Service Layer (`lib/message-service.ts`)
 - Abstracted message service interface
-- Twilio WhatsApp and SMS integration
-- Console mock service for development
+- Console-based logging (ready for provider integration)
 - Automatic phone number formatting for Syria
+- Easy to integrate Twilio, MessageBird, or any provider
 
 ### ✅ Messaging System (`lib/messaging.ts`)
 - Async booking confirmation (non-blocking)
@@ -128,39 +128,63 @@ await retryFailedMessages()
 
 ## Configuration
 
-### Environment Variables
-
-```env
-# Twilio (Optional - for WhatsApp/SMS)
-TWILIO_ACCOUNT_SID="ACxxx"
-TWILIO_AUTH_TOKEN="xxx"
-TWILIO_WHATSAPP_FROM="+14155238886"
-TWILIO_SMS_FROM="+1234567890"
-```
-
 ### Development Mode
 
-Without Twilio configured, messages are logged to console:
+Messages are logged to console by default:
 ```
-[WhatsApp Mock] To: +963912345678, Message: ✅ Appointment Confirmed!...
+[WhatsApp] To: +963912345678
+[WhatsApp] Message: ✅ Appointment Confirmed!...
+[WhatsApp] Note: Integrate messaging provider in production
 ```
+
+### Production Integration
+
+To add real WhatsApp/SMS, integrate your preferred provider in `lib/message-service.ts`:
+
+1. **Choose a provider:**
+   - Twilio (WhatsApp + SMS)
+   - MessageBird
+   - WhatsApp Business API directly
+   - Local SMS gateway
+
+2. **Implement in `message-service.ts`:**
+   ```typescript
+   export class YourMessageService implements MessageService {
+     async sendWhatsApp(to: string, message: string): Promise<void> {
+       // Your provider's API call here
+     }
+     async sendSMS(to: string, message: string): Promise<void> {
+       // Your provider's API call here
+     }
+   }
+   ```
+
+3. **Update `getMessageService()`:**
+   ```typescript
+   export function getMessageService(): MessageService {
+     // Return your service based on configuration
+     return new YourMessageService()
+   }
+   ```
+
+4. **Add environment variables for your provider's credentials**
 
 ---
 
 ## Testing
 
-### With Twilio
-```bash
-cp .env.example .env
-# Add your Twilio credentials
-npm run dev
-# Book an appointment → Message sent via WhatsApp/SMS
-```
-
-### Without Twilio (Development)
+### Development (Console Logging)
 ```bash
 npm run dev
 # Book an appointment → Message logged to console
+```
+
+### Production (After Integration)
+```bash
+cp .env.example .env
+# Add your messaging provider credentials to .env
+npm run dev
+# Book an appointment → Message sent via your provider
 ```
 
 ---
@@ -214,8 +238,8 @@ All phases are complete:
 - Multi-language support (Arabic)
 - Email confirmations as backup
 
-**Twilio Setup:**
-1. Create Twilio account
-2. Get Account SID and Auth Token
-3. Add to environment variables
+**Provider Integration:**
+1. Choose your messaging provider (Twilio, MessageBird, etc.)
+2. Implement in `lib/message-service.ts`
+3. Add credentials to environment variables
 4. Test message delivery

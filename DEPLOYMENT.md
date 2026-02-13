@@ -115,13 +115,12 @@ Create `.env` file:
 # Database (Required)
 DATABASE_URL="postgresql://user:password@host:5432/medical_booking?schema=public"
 
-# WhatsApp/SMS (Optional - for Phase 4)
-TWILIO_ACCOUNT_SID=""
-TWILIO_AUTH_TOKEN=""
-TWILIO_WHATSAPP_FROM=""
-
 # Next.js (Optional)
 NEXT_PUBLIC_APP_URL="http://localhost:3000"
+NODE_ENV="production"
+
+# Note: For WhatsApp/SMS, integrate your preferred messaging provider
+# See lib/message-service.ts for implementation
 ```
 
 ---
@@ -129,13 +128,13 @@ NEXT_PUBLIC_APP_URL="http://localhost:3000"
 ## Production Checklist
 
 - [ ] Set strong database password
-- [ ] Configure WhatsApp/SMS API
 - [ ] Set up HTTPS (SSL certificate)
 - [ ] Configure backup strategy
 - [ ] Set up monitoring
 - [ ] Review doctor authentication security
 - [ ] Test full booking flow
 - [ ] Verify mobile responsiveness
+- [ ] Integrate messaging provider (optional)
 
 ---
 
