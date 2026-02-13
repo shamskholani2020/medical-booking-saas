@@ -4,9 +4,10 @@
 
 ### ✅ Message Service Layer (`lib/message-service.ts`)
 - Abstracted message service interface
-- Console-based logging (ready for provider integration)
+- Console-based logging for development
+- Provider-agnostic architecture
 - Automatic phone number formatting for Syria
-- Easy to integrate Twilio, MessageBird, or any provider
+- Easy to integrate any messaging provider
 
 ### ✅ Messaging System (`lib/messaging.ts`)
 - Async booking confirmation (non-blocking)
