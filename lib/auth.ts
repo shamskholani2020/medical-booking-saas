@@ -1,5 +1,3 @@
-# Simple authentication utilities for MVP
-# Note: In production, use proper auth (NextAuth.js, Auth.js, etc.)
 
 import { cookies } from 'next/headers'
 import { prisma } from './prisma'
