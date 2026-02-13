@@ -23,8 +23,10 @@ COPY . .
 RUN npx prisma generate
 
 # Build Next.js
+# Set a dummy DATABASE_URL for build to prevent Prisma errors
+ENV DATABASE_URL="postgresql://user:password@localhost:5432/db?schema=public"
 ENV NEXT_TELEMETRY_DISABLED 1
-RUN npm run build
+RUN npx next build
 
 # Production image
 FROM base AS runner
